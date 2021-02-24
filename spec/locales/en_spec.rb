@@ -96,11 +96,34 @@ RSpec.describe Humanize, "en locale" do
     [444_333_222_111_999_777_666_555_444_333_222_111_999_777_666_555_444_333_221_111_112_176_514_321_007_310, "four hundred and forty-four quattuortillion, three hundred and thirty-three trevigintillion, two hundred and twenty-two duovigintillion, one hundred and eleven unvigintillion, nine hundred and ninety-nine vigintillion, seven hundred and seventy-seven novemdecillion, six hundred and sixty-six octodecillion, five hundred and fifty-five septendecillion, four hundred and forty-four sexdecillion, three hundred and thirty-three quindecillion, two hundred and twenty-two quattuordecillion, one hundred and eleven tredecillion, nine hundred and ninety-nine duodecillion, seven hundred and seventy-seven undecillion, six hundred and sixty-six decillion, five hundred and fifty-five nonillion, four hundred and forty-four octillion, three hundred and thirty-three septillion, two hundred and twenty-one sextillion, one hundred and eleven quintillion, one hundred and twelve quadrillion, one hundred and seventy-six trillion, five hundred and fourteen billion, three hundred and twenty-one million, seven thousand, three hundred and ten"],
     [444_333_222_111_999_777_666_555_444_333_222_111_999_777_666_555_444_333_221_111_112_176_514_321_007_310_444_333_222_111_999_777_666_555_444_333_222_111_999_777_666_555_444_333_221_111_112_176_514_321_007_310, "four hundred and forty-four quinquagintillion, three hundred and thirty-three novenquadragintillion, two hundred and twenty-two octoquadragintillion, one hundred and eleven septenquadragintillion, nine hundred and ninety-nine sesquadragintillion, seven hundred and seventy-seven quinquadragintillion, six hundred and sixty-six quattuorquadragintillion, five hundred and fifty-five trequadragintillion, four hundred and forty-four duoquadragintillion, three hundred and thirty-three unquadragintillion, two hundred and twenty-two quadragintillion, one hundred and eleven novemtrigintillion, nine hundred and ninety-nine octotrigintillion, seven hundred and seventy-seven septentrigintillion, six hundred and sixty-six sextrigintillion, five hundred and fifty-five quintrigintillion, four hundred and forty-four quattuortrigintillion, three hundred and thirty-three trestrigintillion, two hundred and twenty-one duotrigintillion, one hundred and eleven untrigintillion, one hundred and twelve trigintillion, one hundred and seventy-six novemvigintillion, five hundred and fourteen octovigintillion, three hundred and twenty-one septenvigintillion, seven sexvigintillion, three hundred and ten quinvigintillion, four hundred and forty-four quattuortillion, three hundred and thirty-three trevigintillion, two hundred and twenty-two duovigintillion, one hundred and eleven unvigintillion, nine hundred and ninety-nine vigintillion, seven hundred and seventy-seven novemdecillion, six hundred and sixty-six octodecillion, five hundred and fifty-five septendecillion, four hundred and forty-four sexdecillion, three hundred and thirty-three quindecillion, two hundred and twenty-two quattuordecillion, one hundred and eleven tredecillion, nine hundred and ninety-nine duodecillion, seven hundred and seventy-seven undecillion, six hundred and sixty-six decillion, five hundred and fifty-five nonillion, four hundred and forty-four octillion, three hundred and thirty-three septillion, two hundred and twenty-one sextillion, one hundred and eleven quintillion, one hundred and twelve quadrillion, one hundred and seventy-six trillion, five hundred and fourteen billion, three hundred and twenty-one million, seven thousand, three hundred and ten"]
   ]
+  en_ordinal_tests = [
+    [0, "zeroth"],
+    [8.15, "eighth point one five"],
+    [8.000015, "eighth point zero zero zero zero one five"],
+    [8, "eighth"],
+    [11, "eleventh"],
+    [21, "twenty-first"],
+    [62, "sixty-second"],
+    [99, "ninety-ninth"],
+    [100, "one hundredth"],
+    [101, "one hundred and first"],
+    [111, "one hundred and eleventh"],
+    [121, "one hundred and twenty-first"],
+    [1079, "one thousand and seventy-ninth"],
+    [10_000, "ten thousandth"],
+    [10_079, "ten thousand and seventy-ninth"],
+  ]
   # rubocop:enable Metrics/LineLength
 
   en_tests.each do |num, output|
     it "#{num} is equal to #{output}" do
       expect(num.humanize).to eq(output)
+    end
+  end
+  
+  en_ordinal_tests.each do |num, output|
+    it "#{num} is equal to #{output}" do
+      expect(num.humanize_with_ordinal).to eq(output)
     end
   end
 

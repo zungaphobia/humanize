@@ -23,6 +23,32 @@ module Humanize
 
       parts
     end
+    
+    def humanize_with_ordinal(number)
+      iteration = 0
+      parts = []
+      use_and = false
+      until number.zero?
+        number, remainder = number.divmod(1000)
+        unless remainder.zero?
+          if iteration.zero? && remainder < 100
+            use_and = true
+          else
+            add_ordinalized_grouping(parts, use_and, iteration)
+          end
+          
+          if parts.length > 0
+            parts << SUB_ONE_GROUPING[remainder]
+          else
+            parts << SUB_ONE_ORDINALIZED_GROUPING[remainder]
+          end
+        end
+
+        iteration += 1
+      end
+
+      parts
+    end
 
     private
 
@@ -34,6 +60,17 @@ module Humanize
 
     def add_grouping(parts, use_and, iteration)
       grouping = LOTS[iteration]
+      return unless grouping
+
+      parts << "#{grouping}#{conjunction(parts, use_and)}"
+    end
+    
+    def add_ordinalized_grouping(parts, use_and, iteration)
+      if use_and
+        grouping = LOTS[iteration]
+      else
+        grouping = LOTS_ORDINALIZED[iteration]
+      end
       return unless grouping
 
       parts << "#{grouping}#{conjunction(parts, use_and)}"

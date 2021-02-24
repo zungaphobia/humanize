@@ -26,6 +26,27 @@ module Humanize
     process_decimals(locale_class, locale, parts, decimals_as, spacer)
     Humanize.stringify(parts, sign, spacer)
   end
+  
+  def humanize_with_ordinal(locale: Humanize.config.default_locale,
+               decimals_as: Humanize.config.decimals_as)
+    locale_class, spacer = Humanize.for_locale(locale)
+
+    return locale_class::SUB_ONE_ORDINALIZED_GROUPING[0] if zero?
+
+    infinity = to_f.infinite?
+    if infinity
+      infinity_word = locale_class::INFINITY
+      return infinity == 1 ? infinity_word : "#{locale_class::NEGATIVE}#{spacer}#{infinity_word}"
+    elsif is_a?(Float) && nan?
+      return locale_class::UNDEFINED
+    end
+
+    sign = locale_class::NEGATIVE if negative?
+
+    parts = locale_class.new.humanize_with_ordinal(abs)
+    process_decimals(locale_class, locale, parts, decimals_as, spacer)
+    Humanize.stringify(parts, sign, spacer)
+  end
 
   def self.for_locale(locale)
     case locale.to_sym
